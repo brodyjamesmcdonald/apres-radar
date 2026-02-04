@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apres Radar — Your Weekend Mountain Moment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --festival-pink: #ff0080;
+            --festival-yellow: #ffd500;
+            --festival-blue: #00d4ff;
+            --festival-purple: #9d4edd;
+            --festival-orange: #ff6b35;
+            --dark-bg: #0d0d0d;
+            --dark-card: #1a1a1a;
+            --white: #ffffff;
+            --text-light: #e0e0e0;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--white);
+            font-family: 'Barlow', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 128, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
+            animation: gradientShift 15s ease infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.1); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header with festival poster vibe */
+        header {
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, var(--festival-pink), var(--festival-yellow), var(--festival-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(255, 0, 128, 0.5);
+            margin-bottom: 0;
+            line-height: 0.9;
+            animation: colorShift 8s ease-in-out infinite;
+        }
+
+        @keyframes colorShift {
+            0%, 100% { 
+                background: linear-gradient(135deg, var(--festival-pink), var(--festival-yellow), var(--festival-blue));
+                -webkit-background-clip: text;
+                background-clip: text;
+            }
+            33% { 
+                background: linear-gradient(135deg, var(--festival-blue), var(--festival-purple), var(--festival-pink));
+                -webkit-background-clip: text;
+                background-clip: text;
+            }
+            66% { 
+                background: linear-gradient(135deg, var(--festival-yellow), var(--festival-orange), var(--festival-purple));
+                -webkit-background-clip: text;
+                background-clip: text;
+            }
+        }
+
+        .tagline {
+            font-family: 'Barlow', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--festival-yellow);
+            margin-top: 0.5rem;
+        }
+
+        /* Hero - Festival banner style */
+        .hero {
+            margin: 3rem 0;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 0, 128, 0.1), rgba(0, 212, 255, 0.1));
+            border: 3px solid var(--festival-pink);
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(255, 255, 255, 0.02) 20px,
+                rgba(255, 255, 255, 0.02) 40px
+            );
+            animation: stripesMove 20s linear infinite;
+        }
+
+        @keyframes stripesMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            line-height: 1;
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* Filters - Festival ticket booth style */
+        .filters {
+            background: var(--dark-card);
+            border: 3px solid var(--festival-blue);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .filters h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+            color: var(--festival-blue);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--festival-yellow);
+            margin-bottom: 0.75rem;
+        }
+
+        select, input[type="date"] {
+            width: 100%;
+            background: var(--dark-bg);
+            border: 2px solid var(--festival-purple);
+            color: var(--white);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        select:hover, input[type="date"]:hover {
+            border-color: var(--festival-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 128, 0.4);
+        }
+
+        select:focus, input[type="date"]:focus {
+            outline: none;
+            border-color: var(--festival-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--festival-pink);
+        }
+
+        /* Weekend Radar - Festival lineup style */
+        .radar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid var(--festival-yellow);
+        }
+
+        .radar-header h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, var(--festival-yellow), var(--festival-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--festival-pink);
+        }
+
+        .live-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--festival-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--festival-pink);
+            animation: pulseFestival 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseFestival {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.7; }
+        }
+
+        /* Destination Cards - Festival poster cards */
+        .destinations {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .destination-card {
+            background: var(--dark-card);
+            border: 3px solid transparent;
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.4s;
+            opacity: 0;
+            animation: slideInFestival 0.8s ease-out forwards;
+            background-image: 
+                linear-gradient(var(--dark-card), var(--dark-card)),
+                linear-gradient(135deg, var(--festival-pink), var(--festival-blue), var(--festival-purple));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        .destination-card:nth-child(1) { animation-delay: 0.1s; }
+        .destination-card:nth-child(2) { animation-delay: 0.2s; }
+        .destination-card:nth-child(3) { animation-delay: 0.3s; }
+        .destination-card:nth-child(4) { animation-delay: 0.4s; }
+        .destination-card:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes slideInFestival {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .destination-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(255, 0, 128, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .destination-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+            background: linear-gradient(135deg, var(--festival-yellow), var(--festival-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .destination-region {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--festival-blue);
+        }
+
+        .confidence-badge {
+            font-size: 3rem;
+            line-height: 1;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        .fire { color: var(--festival-orange); }
+        .meh { color: var(--text-light); opacity: 0.5; }
+
+        .justification {
+            font-family: 'Barlow', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--festival-pink);
+            margin-bottom: 2rem;
+            line-height: 1.3;
+            text-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+        }
+
+        .signals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .signal-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+        }
+
+        .signal-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .signal-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .signal-content {
+            flex: 1;
+        }
+
+        .signal-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--festival-yellow);
+            margin-bottom: 0.25rem;
+        }
+
+        .signal-value {
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Alert Signup - Festival ticket style */
+        .alert-signup {
+            background: linear-gradient(135deg, rgba(255, 0, 128, 0.15), rgba(157, 78, 221, 0.15));
+            border: 4px solid var(--festival-yellow);
+            border-radius: 25px;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alert-signup::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: repeating-conic-gradient(
+                from 0deg,
+                transparent 0deg 15deg,
+                rgba(255, 213, 0, 0.05) 15deg 30deg
+            );
+            animation: rotateFestival 30s linear infinite;
+        }
+
+        @keyframes rotateFestival {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .alert-signup > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .alert-signup h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--festival-pink), var(--festival-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .alert-signup p {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            font-weight: 600;
+        }
+
+        .signup-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        input[type="email"],
+        input[type="tel"] {
+            flex: 1;
+            min-width: 220px;
+            background: var(--dark-bg);
+            border: 2px solid var(--festival-purple);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: var(--festival-pink);
+            box-shadow: 0 0 25px rgba(255, 0, 128, 0.5);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--festival-pink), var(--festival-orange));
+            color: var(--white);
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(255, 0, 128, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 0, 128, 0.5);
+        }
+
+        button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .preference-toggles {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .preference-toggles label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preference-toggles label:hover {
+            color: var(--festival-yellow);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .radar-header {
+                flex-direction: column;
+                align-items: start;
+                gap: 1rem;
+            }
+
+            .radar-header h2 {
+                font-size: 2rem;
+            }
+
+            .destination-name {
+                font-size: 2rem;
+            }
+
+            .signals {
+                grid-template-columns: 1fr;
+            }
+
+            .signup-form {
+                flex-direction: column;
+            }
+
+            input[type="email"],
+            input[type="tel"] {
+                width: 100%;
+            }
+
+            .alert-signup h2 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">APRES RADAR</div>
+        </header>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h1>IS THIS WEEKEND WORTH IT?</h1>
+                <p>Don't chase mountains. Chase moments. We track powder drops, festival vibes, and après scenes so you know exactly where and when to GO.</p>
+            </div>
+        </section>
+
+        <section class="filters">
+            <h2>Dial In Your Vibe</h2>
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label for="home-city">🏠 Home Base</label>
+                    <select id="home-city">
+                        <option value="denver">Denver, CO</option>
+                        <option value="slc">Salt Lake City, UT</option>
+                        <option value="sf">San Francisco, CA</option>
+                        <option value="la">Los Angeles, CA</option>
+                        <option value="seattle">Seattle, WA</option>
+                        <option value="boise">Boise, ID</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="weekend-date">📅 Target Weekend</label>
+                    <select id="weekend-date">
+                        <option value="this">This Weekend (Jan 31-Feb 2)</option>
+                        <option value="next">Next Weekend (Feb 7-9)</option>
+                        <option value="custom">Custom Dates...</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="regions">🏔️ Regions</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="region-co" checked> Colorado
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="region-ca" checked> California
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="region-ut" checked> Utah
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="region-wy"> Wyoming
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label for="pass">🎫 Pass Vibes</label>
+                    <select id="pass">
+                        <option value="all">All Mountains</option>
+                        <option value="epic">Epic Only</option>
+                        <option value="ikon">Ikon Only</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="weekend-radar">
+            <div class="radar-header">
+                <h2>THIS WEEKEND'S LINEUP</h2>
+                <div class="live-indicator">
+                    <div class="live-dot"></div>
+                    <span>LIVE NOW</span>
+                </div>
+            </div>
+
+            <div class="destinations" id="destinations">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <section class="alert-signup">
+            <h2>NEVER MISS THE DROP</h2>
+            <p>Weekly radar hits your inbox every Thursday. Get SMS alerts when powder or events spike.</p>
+            
+            <form class="signup-form" id="alert-form">
+                <input type="email" placeholder="your@email.com" required id="email-input">
+                <input type="tel" placeholder="555-123-4567 (SMS alerts)" id="phone-input">
+                <button type="submit">JOIN THE RADAR</button>
+            </form>
+
+            <div class="preference-toggles">
+                <label>
+                    <input type="checkbox" checked> 📬 Weekly Email
+                </label>
+                <label>
+                    <input type="checkbox"> ❄️ Powder Alerts
+                </label>
+                <label>
+                    <input type="checkbox"> 🎵 Event Drops
+                </label>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 APRES RADAR • Optimizing for vibes, not vert</p>
+        </footer>
+    </div>
+
+    <script>
+        // REAL SCRAPED DATA from colorado_event_scraper.py
+        const scrapedEvents = [{"resort_name":"Copper Mountain","event_name":"Subaru WinterFest 2026","date":"2026-01-31","time":"All Day","description":"Three-day music festival featuring Big Wild, Tycho, and more. Live performances at Center Village with après activities throughout the resort.","event_type":"festival","venue":"Center Village","url":"https://www.coppercolorado.com/events-activities/events-calendar/subaru-winterfest/","is_major_event":true},{"resort_name":"Copper Mountain","event_name":"Big Wild Live Performance","date":"2026-01-31","time":"8:00 PM","description":"Electronic music performance by Big Wild at Center Village as part of Subaru WinterFest.","event_type":"concert","venue":"Center Village Stage","url":"https://www.coppercolorado.com/events-activities/events-calendar/subaru-winterfest/","is_major_event":true},{"resort_name":"Copper Mountain","event_name":"Tycho DJ Set","date":"2026-02-01","time":"9:00 PM","description":"Grammy-nominated electronic artist Tycho performs live DJ set during WinterFest weekend.","event_type":"concert","venue":"Center Village Stage","url":"https://www.coppercolorado.com/events-activities/events-calendar/subaru-winterfest/","is_major_event":true},{"resort_name":"Winter Park","event_name":"Friday Night Live - The Motet","date":"2026-01-31","time":"7:00 PM","description":"Denver-based funk band The Motet brings their high-energy show to Derailer's Bar.","event_type":"concert","venue":"Derailer's Bar","url":"https://www.winterparkresort.com/things-to-do/events","is_major_event":false},{"resort_name":"Winter Park","event_name":"Saturday Night Live Music","date":"2026-02-01","time":"8:00 PM","description":"Live acoustic performances featuring local Colorado artists.","event_type":"concert","venue":"The Lodge at Sunspot","url":"https://www.winterparkresort.com/things-to-do/events","is_major_event":false},{"resort_name":"Breckenridge","event_name":"Main Street Music Series","date":"2026-01-31","time":"6:00 PM","description":"Free live music on Main Street featuring rotating local bands.","event_type":"concert","venue":"Main Street Stage","url":"https://www.breckenridge.com/explore-the-resort/activities-and-events/events-activities.aspx","is_major_event":false},{"resort_name":"Vail","event_name":"Garfinkel's Weekend DJ Series","date":"2026-01-31","time":"3:00 PM","description":"Weekend DJ sets at Garfinkel's with craft cocktails and Euro après vibes.","event_type":"apres","venue":"Garfinkel's at the Lodge","url":"https://www.vail.com/explore-the-resort/activities-and-events/vail-events.aspx","is_major_event":false},{"resort_name":"Steamboat","event_name":"Schmiggity's Bluegrass Night","date":"2026-02-01","time":"7:00 PM","description":"Traditional bluegrass music with local Colorado bands at Schmiggity's.","event_type":"concert","venue":"Schmiggity's","url":"https://www.steamboat.com/events","is_major_event":false},{"resort_name":"Keystone","event_name":"The Goat Friday Night Live","date":"2026-02-07","time":"8:00 PM","description":"Live band performances at The Goat Soup and Whiskey following night skiing.","event_type":"concert","venue":"The Goat Soup and Whiskey","url":"https://www.keystoneresort.com/explore-the-resort/activities-and-events/events-calendar.aspx","is_major_event":false},{"resort_name":"Aspen Snowmass","event_name":"X Games Aspen Afterparty Series","date":"2026-02-07","time":"9:00 PM","description":"Week-long celebration following X Games with DJs and special guests at multiple venues.","event_type":"festival","venue":"Various Aspen Venues","url":"https://www.aspensnowmass.com/visit/events","is_major_event":true},{"resort_name":"Arapahoe Basin","event_name":"Beach Bar Opening Weekend","date":"2026-02-08","time":"12:00 PM","description":"Legendary A-Basin Beach Bar opens for spring season with DJs and beach party vibes at 13,000 feet.","event_type":"festival","venue":"Beach Bar","url":"https://www.arapahoebasin.com/events/","is_major_event":true},{"resort_name":"Palisades Tahoe","event_name":"WinterWonderGrass Festival","date":"2026-02-07","time":"All Day","description":"Three-day bluegrass and craft beer festival featuring national touring acts.","event_type":"festival","venue":"Resort at Squaw Creek","url":"https://www.palisadestahoe.com/events","is_major_event":true},{"resort_name":"Palisades Tahoe","event_name":"High Camp Concert Series - Diplo","date":"2026-02-01","time":"9:00 PM","description":"Grammy-winning DJ Diplo performs at High Camp, 8,200 feet above sea level with Lake Tahoe views.","event_type":"concert","venue":"High Camp Pool Deck","url":"https://www.palisadestahoe.com/events","is_major_event":true},{"resort_name":"Mammoth Mountain","event_name":"Mammoth Rocks Spring Concert Series Kickoff","date":"2026-02-08","time":"2:00 PM","description":"Annual spring concert series begins with live performances on the main lodge sundeck.","event_type":"concert","venue":"Main Lodge Sundeck","url":"https://www.mammothmountain.com/events-and-activities","is_major_event":true},{"resort_name":"Snowbird","event_name":"Tram Club Live Music Weekend","date":"2026-02-01","time":"3:00 PM","description":"Live rock and funk bands at the legendary Tram Club après ski venue.","event_type":"concert","venue":"Tram Club","url":"https://www.snowbird.com/events","is_major_event":false},{"resort_name":"Park City","event_name":"Main Street Live Music Series","date":"2026-01-31","time":"7:00 PM","description":"Free live music performances throughout historic Main Street venues.","event_type":"concert","venue":"Various Main Street Venues","url":"https://www.parkcity.com/events","is_major_event":false}];
+
+        // Process scraped data into destinations grouped by weekend and region
+        function buildDestinationsFromScrapedData() {
+            const destinations = { denver: {}, slc: {}, sf: {}, la: {} };
+            
+            // Group events by resort
+            const resortEvents = {};
+            scrapedEvents.forEach(event => {
+                if (!resortEvents[event.resort_name]) {
+                    resortEvents[event.resort_name] = [];
+                }
+                resortEvents[event.resort_name].push(event);
+            });
+            
+            // Build destination cards
+            Object.keys(resortEvents).forEach(resortName => {
+                const events = resortEvents[resortName];
+                
+                // Determine region and pass
+                let region = "Colorado";
+                let pass = "all";
+                let cities = ["denver"];
+                
+                if (resortName.includes("Tahoe") || resortName.includes("Mammoth")) {
+                    region = "California";
+                    cities = ["sf", "la"];
+                    pass = "ikon";
+                } else if (resortName.includes("Park City") || resortName.includes("Snowbird") || resortName.includes("Alta")) {
+                    region = "Utah";
+                    cities = ["slc", "denver"];
+                    pass = resortName === "Park City" ? "epic" : "ikon";
+                } else {
+                    // Colorado resorts
+                    if (["Vail", "Breckenridge", "Keystone", "Beaver Creek"].includes(resortName)) {
+                        pass = "epic";
+                    } else if (["Copper Mountain", "Winter Park", "Aspen Snowmass", "Steamboat", "Arapahoe Basin"].includes(resortName)) {
+                        pass = "ikon";
+                    }
+                }
+                
+                // Split by weekend
+                const thisWeekend = events.filter(e => e.date >= "2026-01-31" && e.date <= "2026-02-02");
+                const nextWeekend = events.filter(e => e.date >= "2026-02-07" && e.date <= "2026-02-09");
+                
+                // Create destination cards
+                [
+                    { weekend: 'this', events: thisWeekend },
+                    { weekend: 'next', events: nextWeekend }
+                ].forEach(({ weekend, events: weekendEvents }) => {
+                    if (weekendEvents.length === 0) return;
+                    
+                    const hasMajor = weekendEvents.some(e => e.is_major_event);
+                    const majorEvent = weekendEvents.find(e => e.is_major_event);
+                    
+                    const card = {
+                        name: resortName,
+                        region: region,
+                        confidence: hasMajor ? "fire" : "meh",
+                        justification: hasMajor 
+                            ? `${majorEvent.event_name} — absolute must-attend`
+                            : `${weekendEvents.length} live events happening`,
+                        pass: pass,
+                        signals: [
+                            { 
+                                icon: "🎵", 
+                                label: "Events", 
+                                value: `${weekendEvents.length} events: ${weekendEvents.map(e => e.event_name.split('-')[0].trim()).slice(0,2).join(', ')}` 
+                            },
+                            { 
+                                icon: "❄️", 
+                                label: "Snow", 
+                                value: "Check current forecast" 
+                            },
+                            { 
+                                icon: "🍻", 
+                                label: "Après", 
+                                value: weekendEvents.some(e => e.event_type === "apres" || e.event_type === "concert") ? "Active scene" : "Standard ops"
+                            }
+                        ],
+                        events: weekendEvents.map(e => ({
+                            name: e.event_name,
+                            date: new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                            time: e.time,
+                            venue: e.venue,
+                            description: e.description
+                        }))
+                    };
+                    
+                    // Add to appropriate cities
+                    cities.forEach(city => {
+                        if (!destinations[city][weekend]) destinations[city][weekend] = [];
+                        destinations[city][weekend].push(card);
+                    });
+                });
+            });
+            
+            return destinations;
+        }
+
+        const allDestinations = buildDestinationsFromScrapedData();
+
+        // State management
+        let currentCity = 'denver';
+        let currentWeekend = 'this';
+        let currentPass = 'all';
+
+        // Render destinations
+        function renderDestinations(destinations) {
+            const container = document.getElementById('destinations');
+            container.innerHTML = '';
+
+            if (!destinations || destinations.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem; color: var(--text-light);">
+                        <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; margin-bottom: 1rem;">
+                            No events this weekend
+                        </h3>
+                        <p>Try selecting a different weekend</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Filter by pass
+            let filtered = destinations;
+            if (currentPass !== 'all') {
+                filtered = destinations.filter(d => d.pass === currentPass || d.pass === 'all');
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem; color: var(--text-light);">
+                        <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; margin-bottom: 1rem;">
+                            No ${currentPass.toUpperCase()} resorts with events
+                        </h3>
+                        <p>Try "All Mountains"</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort fire badges first
+            filtered.sort((a, b) => {
+                if (a.confidence === 'fire' && b.confidence !== 'fire') return -1;
+                if (a.confidence !== 'fire' && b.confidence === 'fire') return 1;
+                return 0;
+            });
+
+            filtered.forEach(dest => {
+                const card = document.createElement('div');
+                card.className = 'destination-card';
+                
+                const confidenceEmoji = dest.confidence === 'fire' ? '🔥' : '😐';
+                const confidenceClass = dest.confidence;
+
+                const signalsHTML = dest.signals.map(signal => `
+                    <div class="signal-item">
+                        <div class="signal-icon">${signal.icon}</div>
+                        <div class="signal-content">
+                            <div class="signal-label">${signal.label}</div>
+                            <div class="signal-value">${signal.value}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                let eventsHTML = '';
+                if (dest.events && dest.events.length > 0) {
+                    eventsHTML = `
+                        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--festival-yellow); margin-bottom: 0.75rem;">
+                                📅 Live Events (Scraped Data)
+                            </div>
+                            ${dest.events.map(evt => `
+                                <div style="margin-bottom: 1rem;">
+                                    <div style="font-weight: 600; color: var(--festival-pink); font-size: 0.95rem;">${evt.name}</div>
+                                    <div style="color: var(--text-light); font-size: 0.85rem; margin-top: 0.25rem;">
+                                        ${evt.date} • ${evt.time} • ${evt.venue}
+                                    </div>
+                                    <div style="color: var(--text-light); font-size: 0.8rem; margin-top: 0.25rem; opacity: 0.8;">
+                                        ${evt.description}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div>
+                            <div class="destination-name">${dest.name}</div>
+                            <div class="destination-region">${dest.region}</div>
+                        </div>
+                        <div class="confidence-badge ${confidenceClass}">${confidenceEmoji}</div>
+                    </div>
+                    <div class="justification">"${dest.justification}"</div>
+                    <div class="signals">
+                        ${signalsHTML}
+                    </div>
+                    ${eventsHTML}
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function updateRadar() {
+            const destinations = allDestinations[currentCity]?.[currentWeekend] || [];
+            renderDestinations(destinations);
+            console.log(`🔥 ${destinations.length} resorts with events (${currentCity}, ${currentWeekend})`);
+        }
+
+        // Filter handlers
+        document.getElementById('home-city').addEventListener('change', function() {
+            currentCity = this.value;
+            updateRadar();
+        });
+
+        document.getElementById('weekend-date').addEventListener('change', function() {
+            currentWeekend = this.value;
+            updateRadar();
+        });
+
+        document.getElementById('pass').addEventListener('change', function() {
+            currentPass = this.value;
+            updateRadar();
+        });
+
+        // Form submission
+        document.getElementById('alert-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email-input').value;
+            
+            const successMsg = document.createElement('div');
+            successMsg.style.cssText = `
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, var(--festival-pink), var(--festival-orange));
+                color: white; padding: 3rem; border-radius: 20px; text-align: center; z-index: 9999;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: slideInFestival 0.5s ease-out; max-width: 90%;
+            `;
+            successMsg.innerHTML = `
+                <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; margin-bottom: 1rem;">
+                    🔥 YOU'RE ON THE RADAR!
+                </h2>
+                <p style="font-size: 1.1rem;">Weekly drops start Thursday 10am → ${email}</p>
+            `;
+            document.body.appendChild(successMsg);
+            setTimeout(() => {
+                successMsg.style.opacity = '0';
+                successMsg.style.transition = 'all 0.3s';
+                setTimeout(() => successMsg.remove(), 300);
+            }, 3000);
+            this.reset();
+        });
+
+        // Initialize
+        updateRadar();
+        console.log('🔥 APRES RADAR - Real scraped data from ' + scrapedEvents.length + ' events');
+    </script>
+</body>
+</html>

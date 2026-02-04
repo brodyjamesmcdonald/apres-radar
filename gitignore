@@ -1,0 +1,71 @@
+# Apres Radar - Git Ignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Data files (scraped data stored in database, not git)
+data/
+*.json
+*.csv
+!vercel.json
+
+# Logs
+*.log
+scraper.log
+
+# Environment variables (KEEP THESE SECRET!)
+.env
+.env.local
+.env.*.local
+
+# API Keys (NEVER commit these!)
+config.py
+secrets.py
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Vercel
+.vercel
+
+# Node (if you add any build tools later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
