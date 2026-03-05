@@ -31,7 +31,17 @@ class ScraperOrchestrator:
     """Manages all resort scrapers and saves to Supabase"""
     
     def __init__(self):
-        self.supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+        # Use new Supabase client options for new key format
+        from supabase import ClientOptions
+        options = ClientOptions(
+            schema="public",
+            headers={"apikey": SUPABASE_KEY}
+        )
+        self.supabase: Client = create_client(
+            SUPABASE_URL, 
+            SUPABASE_KEY,
+            options=options
+        )
         self.scrapers = [
             EldoraScraper(),
             CopperScraper(),
@@ -175,3 +185,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
