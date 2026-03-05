@@ -1,0 +1,12 @@
+# Railway Deployment Config for Apres Radar Scraper
+
+# This file tells Railway how to run your scraper
+# Railway will automatically detect and use this
+
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "python main.py"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
