@@ -7,7 +7,8 @@ import os
 import sys
 from datetime import datetime, timedelta
 import time
-from supabase import create_client, Client
+import psycopg2
+from psycopg2.extras import RealDictCursor
 from resort_scrapers import (
     EldoraScraper,
     CopperScraper,
@@ -23,19 +24,18 @@ from resort_scrapers import (
     TellurideScraper
 )
 
-# Supabase connection
-SUPABASE_URL = os.getenv('SUPABASE_URL')
-SUPABASE_KEY = os.getenv('SUPABASE_KEY')
+# Database connection - using session pooler port 6543
+DATABASE_URL = os.getenv('DATABASE_URL')
 
 class ScraperOrchestrator:
-    """Manages all resort scrapers and saves to Supabase"""
+    """Manages all resort scrapers and saves to PostgreSQL"""
     
     def __init__(self):
-        self.supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+        self.conn = psycopg2.connect(DATABASE_URL)
         self.scrapers = [
-            EldoraScraper(),
             CopperScraper(),
             WinterParkScraper(),
+            EldoraScraper(),
             SteamboatScraper(),
             AspenSnowmassScraper(),
             ArapahoeBasinScraper(),
@@ -83,62 +83,97 @@ class ScraperOrchestrator:
         
         self.print_summary()
         self.cleanup_old_events()
+        self.conn.close()
     
     def save_events(self, events: list, resort_name: str) -> int:
-        """Save events to Supabase"""
+        """Save events to PostgreSQL"""
         saved_count = 0
+        cursor = self.conn.cursor()
         
         for event in events:
             try:
-                # Check if event already exists (avoid duplicates)
-                existing = self.supabase.table('events').select('id').eq(
-                    'event_name', event['event_name']
-                ).eq('event_date', event['event_date']).eq(
-                    'resort_name', resort_name
-                ).execute()
+                # Check if event already exists
+                cursor.execute(
+                    """
+                    SELECT id FROM events 
+                    WHERE event_name = %s AND event_date = %s AND resort_name = %s
+                    """,
+                    (event['event_name'], event['event_date'], resort_name)
+                )
+                existing = cursor.fetchone()
                 
-                if existing.data:
+                if existing:
                     # Update existing event
-                    self.supabase.table('events').update({
-                        'description': event.get('description'),
-                        'event_time': event.get('event_time'),
-                        'venue': event.get('venue'),
-                        'url': event.get('url'),
-                        'scraped_at': datetime.now().isoformat()
-                    }).eq('id', existing.data[0]['id']).execute()
+                    cursor.execute(
+                        """
+                        UPDATE events SET
+                            description = %s,
+                            event_time = %s,
+                            venue = %s,
+                            url = %s,
+                            scraped_at = NOW()
+                        WHERE id = %s
+                        """,
+                        (
+                            event.get('description'),
+                            event.get('event_time'),
+                            event.get('venue'),
+                            event.get('url'),
+                            existing[0]
+                        )
+                    )
                 else:
                     # Insert new event
-                    self.supabase.table('events').insert({
-                        'resort_name': resort_name,
-                        'event_name': event['event_name'],
-                        'event_date': event['event_date'],
-                        'event_time': event.get('event_time'),
-                        'description': event.get('description'),
-                        'event_type': event.get('event_type', 'other'),
-                        'venue': event.get('venue'),
-                        'url': event.get('url'),
-                        'is_major_event': event.get('is_major_event', False),
-                        'scraped_at': datetime.now().isoformat()
-                    }).execute()
+                    cursor.execute(
+                        """
+                        INSERT INTO events (
+                            resort_name, event_name, event_date, event_time,
+                            description, event_type, venue, url, is_major_event,
+                            scraped_at
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                        """,
+                        (
+                            resort_name,
+                            event['event_name'],
+                            event['event_date'],
+                            event.get('event_time'),
+                            event.get('description'),
+                            event.get('event_type', 'other'),
+                            event.get('venue'),
+                            event.get('url'),
+                            event.get('is_major_event', False)
+                        )
+                    )
                 
+                self.conn.commit()
                 saved_count += 1
                 
             except Exception as e:
                 print(f"      ⚠️  Error saving event '{event.get('event_name')}': {e}")
+                self.conn.rollback()
                 continue
         
+        cursor.close()
         return saved_count
     
     def cleanup_old_events(self):
         """Delete old non-major events (30 days past)"""
         try:
+            cursor = self.conn.cursor()
             cutoff_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
             
-            result = self.supabase.table('events').delete().lt(
-                'event_date', cutoff_date
-            ).eq('is_major_event', False).execute()
+            cursor.execute(
+                """
+                DELETE FROM events 
+                WHERE event_date < %s AND is_major_event = FALSE
+                """,
+                (cutoff_date,)
+            )
             
-            deleted_count = len(result.data) if result.data else 0
+            deleted_count = cursor.rowcount
+            self.conn.commit()
+            cursor.close()
+            
             print(f"\n🗑️  Cleaned up {deleted_count} old events (>30 days past)")
             
         except Exception as e:
@@ -165,8 +200,8 @@ class ScraperOrchestrator:
 
 def main():
     """Main entry point"""
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        print("❌ ERROR: SUPABASE_URL and SUPABASE_KEY environment variables required")
+    if not DATABASE_URL:
+        print("❌ ERROR: DATABASE_URL environment variable required")
         sys.exit(1)
     
     orchestrator = ScraperOrchestrator()
